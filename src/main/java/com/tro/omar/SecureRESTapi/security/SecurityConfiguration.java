@@ -20,14 +20,21 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.inMemoryAuthentication() 
 				.withUser( "Admin").password(passwordEncoder().encode("Admin123")).roles("ADMIN")
 				.and()
-				.withUser("user").password(passwordEncoder().encode("password")).roles("USER");
+				.withUser( "manager").password(passwordEncoder().encode("man")).roles("MANAGER")
+				.and()
+				.withUser("user").password(passwordEncoder().encode("pass")).roles("USER");
 	}//AuthenticationManagerBuilder
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
 				.authorizeRequests()
-				.anyRequest().authenticated()
+				//.anyRequest().authenticated()
+				.antMatchers("/employee").permitAll()
+				.antMatchers("index.html").permitAll()
+				.antMatchers("/employee/{id}").authenticated()
+				.antMatchers("/Admin/**").hasRole("ADMIN")
+				.antMatchers("/employee/edit").hasAnyRole("ADMIN","MANAGER")
 				.and()
 				.httpBasic();
 	}//HttpSecurity
