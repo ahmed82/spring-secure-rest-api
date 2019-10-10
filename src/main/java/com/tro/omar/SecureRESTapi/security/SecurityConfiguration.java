@@ -18,7 +18,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth
 				.inMemoryAuthentication() 
-				.withUser( "Admin").password(passwordEncoder().encode("Admin123")).roles("ADMIN")
+				.withUser( "Admin").password(passwordEncoder().encode("Admin123")).roles("ADMIN").authorities("CRUD_EMPL","R_EMPL")
 				.and()
 				.withUser( "manager").password(passwordEncoder().encode("man")).roles("MANAGER")
 				.and()
@@ -27,24 +27,53 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http
+		http 
+			.cors().and().csrf().disable()
+			
 				.authorizeRequests()
 				//.anyRequest().authenticated()
-				.antMatchers("/employee").permitAll()
-				.antMatchers("index.html").permitAll()
-				.antMatchers("/employee/{id}").authenticated()
+				.antMatchers("/index.html").permitAll()
+				
+				//.antMatchers("/employees/").permitAll()
+				 
+				.antMatchers("/employees/**").authenticated()
 				.antMatchers("/Admin/**").hasRole("ADMIN")
-				.antMatchers("/employee/edit").hasAnyRole("ADMIN","MANAGER")
+				.antMatchers("/employees/edit").hasAnyRole("ADMIN","MANAGER") 
+				//.antMatchers("/api/employees/**").authenticated()
+				.antMatchers("/api/students/**").hasAuthority("CRUD_EMPL")
+				
 				.and()
 				.httpBasic();
+		
+		
+		
 	}//HttpSecurity
 	
 	
 	@Bean
 	public PasswordEncoder passwordEncoder(){
 		return new BCryptPasswordEncoder();
-		
 	}
 
+	
+				/*
+				 * @Override
+			protected void configure(HttpSecurity http) throws Exception { 
+				    http
+					    .csrf().disable()
+					    .exceptionHandling()
+					    .authenticationEntryPoint(restAuthenticationEntryPoint)
+					    .and()
+						    .authorizeRequests()
+							    .antMatchers("/api/foos").authenticated()
+							    .antMatchers("/api/admin/**").hasRole("ADMIN")
+					    .and()
+					   .formLogin()
+					   .successHandler(mySuccessHandler)
+					   .failureHandler(myFailureHandler)
+					    .and()
+				    .logout();
+			}
+				*/
 	
 }//SecurityConfiguration
