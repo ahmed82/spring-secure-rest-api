@@ -1,5 +1,5 @@
 package com.tro.omar.SecureRESTapi.security;
-
+/*
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -56,7 +56,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	}
 
 	
-				/*
+				
 				 * @Override
 			protected void configure(HttpSecurity http) throws Exception { 
 				    http
@@ -74,6 +74,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 					    .and()
 				    .logout();
 			}
-				*/
+				
 	
-}//SecurityConfiguration
+}*/
