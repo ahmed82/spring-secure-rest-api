@@ -4,17 +4,19 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
-@Table(name = "employee")
+//@Table(name = "employee")
 public class Employee {
 	
+	//@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	//@GeneratedValue(generator="system-uuid")
+	//@GenericGenerator(name="system-uuid", strategy = "uuid")
 	private String id;
 	
 	@NotBlank
